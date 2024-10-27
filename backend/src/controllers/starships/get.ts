@@ -9,7 +9,7 @@ interface StarshipFilters {
     manufacturer?: RegExp;
 }
 
-export default async function getSpecies(req: Request, res: Response, next: NextFunction) {
+export default async function getStarships(req: Request, res: Response, next: NextFunction) {
     try {
         let filter: StarshipFilters = {};
 
