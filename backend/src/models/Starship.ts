@@ -1,9 +1,30 @@
 import mongoose from "mongoose";
 
+export interface StarshipData {
+    name: string;
+    model?: string;
+    starship_class: string;
+    manufacturer: string;
+    cost_in_credits: string;
+    length: string;
+    crew: string;
+    passengers: string;
+    max_atmosphering_speed: string;
+    hyperdrive_rating: string;
+    MGLT: string;
+    cargo_capacity: string;
+    consumables: string;
+    films: string[];
+    pilots: string[];
+    url: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
 const schema = new mongoose.Schema(
     {
         name: { type: String, required: true },
-        model_: { type: String, required: true },
+        model: { type: String, required: true },
         starship_class: { type: String, required: true },
         manufacturer: { type: String, required: true },
         cost_in_credits: { type: String, required: true },

@@ -2,7 +2,7 @@ import axios from 'axios';
 import cron from 'node-cron';
 // Controladores
 import createManyPeople from './controllers/people/createMany';
-import createManyPlanets from './controllers/planets/createMany'
+import createManyPlanets from './controllers/planets/createMany';
 import createManyFilms from './controllers/films/createMany';
 import createManySpecies from './controllers/species/createMany';
 import createManyStarships from './controllers/starships/createMany';
