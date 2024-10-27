@@ -25,7 +25,7 @@ export default async function getFilmsFromDB(options: OptionsData) {
         if (film) {
             return {
                 success: true,
-                count: totalPages,
+                count: totalCount,
                 next: nextPage,
                 previous: previousPage,
                 results: film || [],
@@ -35,7 +35,7 @@ export default async function getFilmsFromDB(options: OptionsData) {
 
         return {
             success: false,
-            count: totalPages || null,
+            count: totalCount || null,
             next: nextPage || null,
             previous: previousPage || null,
             results: film || [],

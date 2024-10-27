@@ -46,10 +46,6 @@ export default async function getPeople(req: Request, res: Response, next: NextF
             filter.eye_color = new RegExp(req.query.eye_color.trim(), "i");
         }
 
-        if (typeof req.query.birth_year === "string") {
-            filter.birth_year = new RegExp(req.query.birth_year.trim(), "i");
-        }
-
         if (typeof req.query.gender === "string") {
             filter.gender = new RegExp(req.query.gender.trim(), "i");
         }

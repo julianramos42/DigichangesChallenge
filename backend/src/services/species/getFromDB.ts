@@ -25,7 +25,7 @@ export default async function getSpeciesFromDB(options: OptionsData) {
         if (specie) {
             return {
                 success: true,
-                count: totalPages,
+                count: totalCount,
                 next: nextPage,
                 previous: previousPage,
                 results: specie || [],
@@ -35,7 +35,7 @@ export default async function getSpeciesFromDB(options: OptionsData) {
 
         return {
             success: false,
-            count: totalPages || null,
+            count: totalCount || null,
             next: nextPage || null,
             previous: previousPage || null,
             results: specie || [],
