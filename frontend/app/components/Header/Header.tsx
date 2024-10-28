@@ -11,33 +11,35 @@ export default function Header() {
   const categories = ['People', "Films", "Planets", "Starships", "Species", "Vehicles"];
 
   return (
-    <header className="bg-primary text-primaryForeground p-4 border-b">
-      <div className="flex justify-between items-center">
-        <Link href={'/'}><Image src={logo} width={77} height={44} alt='logo' /></Link>
-        <div className="hidden md:flex items-center space-x-4">
-          <div className="flex space-x-2">
-            {categories.map((categorie, index) => (
-              <div key={index} className="bg-background font-semibold text-foreground px-2 py-1 rounded text-sm">
-                <Link href={`/${categorie.toLowerCase()}`}>{categorie}</Link>
-              </div>
-            ))}
-          </div>
+    <header className="bg-primary text-primaryForeground p-4 border-b md:h-[10vh] flex flex-col gap-4 sm:gap-0 sm:flex-row sm:justify-between sm:items-center">
+
+      <Link href={'/'}><Image src={logo} width={77} height={44} alt='logo' /></Link>
+      <div className="hidden md:flex items-center space-x-4">
+        <div className="flex space-x-2">
+          {categories.map((categorie, index) => (
+            <div key={index} className="bg-background font-medium text-foreground px-2 py-1 rounded text-sm">
+              <Link href={`/${categorie.toLowerCase()}`}>{categorie}</Link>
+            </div>
+          ))}
         </div>
-        <button className="md:hidden" onClick={() => setIsHeaderMenuOpen(!isHeaderMenuOpen)}>
+      </div>
+
+      <div className="flex gap-2 md:hidden">
+        {isHeaderMenuOpen && (
+          <div>
+            <div className="flex flex-wrap gap-2">
+              {categories.map((categorie, index) => (
+                <div key={index} className="bg-background font-medium text-foreground px-2 py-1 rounded text-sm">
+                  <Link href={`/${categorie.toLowerCase()}`}>{categorie}</Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        <button onClick={() => setIsHeaderMenuOpen(!isHeaderMenuOpen)}>
           {isHeaderMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
-      {isHeaderMenuOpen && (
-        <div className="mt-4 md:hidden">
-          <div className="flex flex-wrap gap-2">
-            {[...Array(6)].map((_, index) => (
-              <div key={index} className="bg-background text-foreground px-2 py-1 rounded text-sm">
-                Filtro {index + 1}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </header>
   );
 }

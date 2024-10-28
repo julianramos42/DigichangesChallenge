@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { ChevronLeft, ChevronRight, Menu, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, FilterIcon, Menu, X } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link';
 
@@ -112,20 +112,20 @@ export default function Component() {
   }, []);
 
   return (
-    <div className="min-h-full flex flex-col">
+    <div className="md:h-[80vh] flex flex-col">
 
       <main className="flex-grow flex flex-col md:flex-row items-start">
 
         {/* CARDS SECTION */}
         <section className="flex-grow p-4">
-          <h2 className="p-4 font-semibold text-3xl">People: </h2>
+          <h2 className="p-4 font-bold text-3xl text-title">People: </h2>
 
           {
             people.length ?
-              <div className="flex-grow p-4 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+              <div className="flex-grow p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {
                   people.map((item, index) => (
-                    <div key={index} className="bg-card text-cardForeground p-4 rounded-lg shadow max-h-20">
+                    <div key={index} className="bg-card text-cardForeground p-4 rounded-lg shadow min-h-20">
                       <h3 className="text-lg font-semibold">{item.name}</h3>
                       <Link href={''}><button className="text-sm text-muted">See Details</button></Link>
                     </div>
@@ -134,13 +134,14 @@ export default function Component() {
               </div>
               :
               <div className="flex-grow p-4">
-                <div className="text-cardForeground p-4 rounded-lg gap-3 max-h-40 flex flex-col justify-center">
+                <div className="text-cardForeground p-4 rounded-lg gap-3 min-h-40 flex flex-col justify-center">
                   <h3 className="text-lg font-semibold">Nothing Found</h3>
                   <p className="text-sm text-muted">Try going back to page 1 or clearing the filters.</p>
                 </div>
               </div>
           }
 
+          {/* PAGINATION */}
           <div className="flex justify-center items-center space-x-2 mt-4">
             <button
               onClick={() => handlePageChange('prev')}
@@ -172,25 +173,27 @@ export default function Component() {
         </section>
 
         {/* FILTRO */}
-        <div className="md:w-64 bg-primary p-4 border-l min-h-screen">
+        <div className="w-full md:w-64 bg-primary p-4 border-l md:h-full">
 
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-primaryForeground">Filter By:</h2>
+            <h2 className={`text-lg font-semibold text-primaryForeground ${isMainMenuOpen ? 'block' : 'hidden'} md:block`}>Filter By:</h2>
             <button className="md:hidden" onClick={() => setIsMainMenuOpen(!isMainMenuOpen)}>
-              {isMainMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMainMenuOpen ? <X size={24} /> : <FilterIcon size={36} className='rounded shadow p-2' />}
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className={`space-y-2 ${isMainMenuOpen ? 'block' : 'hidden'} md:block`}>
-            {availablesFilters.map((availableFilter, index) => (
-              <div key={index} className="flex flex-col bg-background p-2 rounded text-foreground">
-                <label>{availableFilter}:</label>
-                <input type='text' value={filters[availableFilter] || ''}
-                  onChange={(e) => handleInputChange(e, availableFilter)}
-                  className="border rounded p-1" />
-              </div>
-            ))}
-            <input type='submit' value={'Search'} className='bg-background font-semibold text-foreground px-2 py-1 rounded text-sm' />
+          <form onSubmit={handleSubmit} className={`flex gap-2 flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
+            <div className={`flex flex-wrap gap-2 items-center md:flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
+              {availablesFilters.map((availableFilter, index) => (
+                <div key={index} className="flex flex-col bg-background p-2 m-0 rounded text-foreground">
+                  <label>{availableFilter}:</label>
+                  <input type='text' value={filters[availableFilter] || ''}
+                    onChange={(e) => handleInputChange(e, availableFilter)}
+                    className="border rounded p-1" />
+                </div>
+              ))}
+            </div>
+            <input type='submit' value={'Search'} className='bg-background font-semibold text-foreground px-2 py-1 rounded text-sm w-20' />
           </form>
 
         </div>

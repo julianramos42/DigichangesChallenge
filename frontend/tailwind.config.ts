@@ -18,6 +18,7 @@ const config: Config = {
         card: "#F9FAFB", 
         cardForeground: "#1F2937",
         muted: "#6B7280",
+        title: "#04378c"
       },
     },
   },
