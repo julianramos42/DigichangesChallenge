@@ -55,5 +55,5 @@ const cronJob = cron.schedule('0 0 * * *', () => {
 }, {
   scheduled: false // El cron no se inicia automáticamente
 });
-fetchDataAndSaveToDB();
+
 export default cronJob;
