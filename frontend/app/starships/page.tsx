@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { ArrowUpDown, ChevronLeft, ChevronRight, FilterIcon, Menu, X } from 'lucide-react'
+import { /* ArrowUpDown */ ChevronLeft, ChevronRight, FilterIcon, X } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link';
 import NothingFound from '../components/NothingFound/NothingFound';
@@ -38,12 +38,12 @@ export default function StarshipsList() {
   const [nextPage, setNextPage] = useState('');
   const [previousPage, setPreviousPage] = useState('');
   const [filters, setFilters] = useState<Filters>({});
-  const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC'>('ASC')
+  /* const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC'>('ASC') */
 
   async function fetchStarships(page: string) {
     try {
       const filteredFilters = Object.fromEntries(
-        Object.entries(filters).filter(([x, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
+        Object.entries(filters).filter(([_, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
       ) as Record<string, string>;
 
       const queryString = new URLSearchParams(filteredFilters).toString();
@@ -85,7 +85,7 @@ export default function StarshipsList() {
       }
 
       const filteredFilters = Object.fromEntries(
-        Object.entries(auxFilters).filter(([x, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
+        Object.entries(auxFilters).filter(([_, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
       ) as Record<string, string>;
 
       const queryString = new URLSearchParams(filteredFilters).toString();
@@ -121,9 +121,9 @@ export default function StarshipsList() {
     fetchStarships(url);
   }
 
-  function toggleSortOrder() {
+  /* function toggleSortOrder() {
     setSortOrder(prevOrder => prevOrder === 'ASC' ? 'DESC' : 'ASC');
-  }
+  } */
 
   useEffect(() => {
     fetchStarships('');

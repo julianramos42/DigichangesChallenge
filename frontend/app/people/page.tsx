@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { ChevronLeft, ChevronRight, FilterIcon, Menu, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, FilterIcon, X } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link';
 import NothingFound from '../components/NothingFound/NothingFound';
@@ -40,7 +40,7 @@ export default function PeopleList() {
   async function fetchPeople(page: string) {
     try {
       const filteredFilters = Object.fromEntries(
-        Object.entries(filters).filter(([x, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
+        Object.entries(filters).filter(([_, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
       ) as Record<string, string>;
 
       const queryString = new URLSearchParams(filteredFilters).toString();
@@ -82,7 +82,7 @@ export default function PeopleList() {
       }
 
       const filteredFilters = Object.fromEntries(
-        Object.entries(auxFilters).filter(([x, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
+        Object.entries(auxFilters).filter(([_, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
       ) as Record<string, string>;
 
       const queryString = new URLSearchParams(filteredFilters).toString();
