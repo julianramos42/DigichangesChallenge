@@ -3,7 +3,7 @@ import app from '../src/app';
 let port = Number(process.env.PORT) || 8080;
 app.set('port', port);
 
-const server = app.listen(port, '0.0.0.0', () => {
+const server = app.listen(port, () => {
   console.log(`Server ready on port ${port}`);
 });
 
