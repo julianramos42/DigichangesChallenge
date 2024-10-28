@@ -11,30 +11,30 @@ interface Params {
     };
 }
 
-interface PeopleData {
+interface PlanetData {
     name: string;
-    height: string;
-    mass: string;
-    hair_color: string;
-    skin_color: string;
-    eye_color: string;
-    birth_year: string;
-    gender: string;
-    homeworld?: string;
+    diameter: string;
+    rotation_period: string;
+    orbital_period: string;
+    gravity: string;
+    population: string;
+    climate: string;
+    terrain: string;
+    surface_water: string;
+    residents: string[];
     films: string[];
-    species: string[];
-    vehicles: string[];
-    starships: string[];
     url: string;
-}
+    createdAt?: Date;
+    updatedAt?: Date;
+  }
 
-export default function PeopleDetail({ params }: Params) {
-    const [people, setPeople] = useState<PeopleData | null>(null);
+export default function PlanetDetail({ params }: Params) {
+    const [planet, setPlanet] = useState<PlanetData | null>(null);
     const { id } = params;
 
-    async function fetchPeople() {
+    async function fetchPlanet() {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/people?url=${id}`);
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/planets?url=${id}`);
             const itemData = res.data.results[0]
             // Elimina propiedades que no necesitamos o no queremos exponer
             delete itemData._id
@@ -42,32 +42,32 @@ export default function PeopleDetail({ params }: Params) {
             delete itemData.updatedAt
             delete itemData.url
             delete itemData.__v
-            setPeople(itemData);
+            setPlanet(itemData);
         } catch (err) {
-            console.error('Error fetching character:', err);
-            setPeople(null)
+            console.error('Error fetching planet:', err);
+            setPlanet(null)
         }
     }
 
     useEffect(() => {
-        fetchPeople();
+        fetchPlanet();
     }, [id]);
 
-    if (!people) {
+    if (!planet) {
         return <div className="flex justify-center items-center h-[90vh]">Loading...</div>;
     }
 
     return (
         <div className="min-h-screen bg-primary p-8">
-            <Link href="/people" className="inline-flex items-center text-title hover:text-black transition-colors mb-6">
+            <Link href="/planets" className="inline-flex items-center text-title hover:text-black transition-colors mb-6">
                 <ChevronLeft className="mr-2" />
-                Back to People
+                Back to Planets
             </Link>
-            <h1 className="text-4xl font-bold mb-6 text-center">{people.name}</h1>
+            <h1 className="text-4xl font-bold mb-6 text-center">{planet.name}</h1>
             <div className="max-w-4xl mx-auto bg-card border shadow-2xl rounded-lg overflow-hidden">
                 <table className="w-full">
                     <tbody>
-                        {Object.entries(people).map(([key, value]) => {
+                        {Object.entries(planet).map(([key, value]) => {
                             return (
                                 <tr key={key} className="border-b last:border-b-0">
                                     <th className="text-left p-4 bg-primary text-primaryForeground font-semibold capitalize">{key.replace('_', ' ')}</th>

@@ -6,61 +6,59 @@ import axios from 'axios'
 import Link from 'next/link';
 import NothingFound from '../components/NothingFound/NothingFound';
 
-interface PeopleData {
+interface PlanetData {
   name: string;
-  height: string;
-  mass: string;
-  hair_color: string;
-  skin_color: string;
-  eye_color: string;
-  birth_year: string;
-  gender: string;
-  homeworld?: string;
+  diameter: string;
+  rotation_period: string;
+  orbital_period: string;
+  gravity: string;
+  population: string;
+  climate: string;
+  terrain: string;
+  surface_water: string;
+  residents: string[];
   films: string[];
-  species: string[];
-  vehicles: string[];
-  starships: string[];
   url: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-const availablesFilters = ['Name', 'Gender'];
+const availablesFilters = ['Name', 'Climate', 'Terrain'];
 type FilterKeys = typeof availablesFilters[number];
 type Filters = Partial<Record<FilterKeys, string>>;
 
-export default function PeopleList() {
+export default function PlanetsList() {
   const [isMainMenuOpen, setIsMainMenuOpen] = useState(false);
-  const [people, setPeople] = useState<PeopleData[]>([]);
+  const [planets, setPlanets] = useState<PlanetData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [nextPage, setNextPage] = useState('');
   const [previousPage, setPreviousPage] = useState('');
   const [filters, setFilters] = useState<Filters>({});
 
-  async function fetchPeople(page: string) {
+  async function fetchPlanets(page: string) {
     try {
       const filteredFilters = Object.fromEntries(
         Object.entries(filters).filter(([x, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
       ) as Record<string, string>;
 
       const queryString = new URLSearchParams(filteredFilters).toString();
-      const url = page ? page : `${process.env.NEXT_PUBLIC_API_URL}/people?${queryString}`;
+      const url = page ? page : `${process.env.NEXT_PUBLIC_API_URL}/planets?${queryString}`;
 
       const res = await axios.get(url);
       const data = res.data;
 
       setNextPage(data.next);
       setPreviousPage(data.previous);
-      setPeople(data.results);
+      setPlanets(data.results);
     } catch (err) {
       console.log('Error:' + err);
-      setPeople([]);
+      setPlanets([]);
     }
   }
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    fetchPeople('');
+    fetchPlanets('');
   }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>, filter: FilterKeys) {
@@ -86,10 +84,10 @@ export default function PeopleList() {
       ) as Record<string, string>;
 
       const queryString = new URLSearchParams(filteredFilters).toString();
-      const url = queryString.includes('page') ? `${process.env.NEXT_PUBLIC_API_URL}/people?${queryString}` : `${process.env.NEXT_PUBLIC_API_URL}/people?page=${page}${queryString}`;
+      const url = queryString.includes('page') ? `${process.env.NEXT_PUBLIC_API_URL}/planets?${queryString}` : `${process.env.NEXT_PUBLIC_API_URL}/planets?page=${page}${queryString}`;
       setCurrentPage(page);
 
-      fetchPeople(url);
+      fetchPlanets(url);
     } else if (page === 'next' && nextPage) {
       setCurrentPage(currentPage + 1);
       const pageNumber = nextPage.slice(-1);
@@ -97,7 +95,7 @@ export default function PeopleList() {
         ...filters,
         page: String(pageNumber)
       })
-      fetchPeople(nextPage);
+      fetchPlanets(nextPage);
     } else if (page === 'prev' && previousPage) {
       setCurrentPage(currentPage - 1);
       const pageNumber = previousPage.slice(-1);
@@ -105,7 +103,7 @@ export default function PeopleList() {
         ...filters,
         page: String(pageNumber)
       })
-      fetchPeople(previousPage);
+      fetchPlanets(previousPage);
     }
   }
 
@@ -114,12 +112,12 @@ export default function PeopleList() {
 
     setFilters({});
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/people?page=${currentPage}`;
-    fetchPeople(url);
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/planets?page=${currentPage}`;
+    fetchPlanets(url);
   }
 
   useEffect(() => {
-    fetchPeople('');
+    fetchPlanets('');
   }, []);
 
   return (
@@ -129,25 +127,32 @@ export default function PeopleList() {
 
         {/* CARDS SECTION */}
         <section className="flex-grow p-4">
-          <h2 className="p-4 font-bold text-3xl text-title">People: </h2>
+          <h2 className="p-4 font-bold text-3xl text-title">Planets: </h2>
 
           {
-            people.length ?
+            planets.length ?
               <div className="flex-grow p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {
-                  people.map((item, index) => (
+                  planets.map((item, index) => (
                     <div key={index} className="bg-card text-cardForeground p-4 rounded-lg shadow min-h-20 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                      <h3 className="text-lg font-semibold">{item.name}</h3>
-                      <h5 className="text-lg font-normal">Gender: {item.gender.charAt(0).toUpperCase() + item.gender.slice(1)}</h5>
+                      <h3 className="text-lg font-bold">{item.name}</h3>
+                      <div className="text-md flex gap-2">
+                        <h5 className='font-semibold'>Climate:</h5>
+                        <p>{item.climate.charAt(0).toUpperCase() + item.climate.slice(1)}</p>
+                      </div>
+                      <div className="text-md flex gap-2">
+                        <h5 className='font-semibold'>Terrain:</h5>
+                        <p>{item.terrain.charAt(0).toUpperCase() + item.terrain.slice(1)}</p>
+                      </div>
                       <Link
-                        href={`/people/${item.url.split('/')[item.url.split('/').length-2]}`} // divide la url en secciones y obtenemos el numero que esta entre los / / finales
+                        href={`/planets/${item.url.split('/')[item.url.split('/').length - 2]}`} // divide la url en secciones y obtenemos el numero que esta entre los / / finales
                       ><button className="text-sm text-muted rounded shadow-md p-2 hover:text-primaryForeground transition-colors duration-300">See Details</button></Link>
                     </div>
                   ))
                 }
               </div>
               :
-              <NothingFound/>
+              <NothingFound />
           }
 
           {/* PAGINATION */}
