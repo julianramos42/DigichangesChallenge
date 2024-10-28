@@ -9,8 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: "#FFFFFF",
+        primaryForeground: "#001435",
+        secondary: "#EEEEEE",
+        secondaryForeground: "#1F2937",
+        background: "#01EFAB",
+        foreground: "#1F2937",
+        card: "#F9FAFB", 
+        cardForeground: "#1F2937",
+        muted: "#6B7280",
       },
     },
   },
