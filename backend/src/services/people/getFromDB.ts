@@ -12,12 +12,12 @@ interface OptionsData {
 export default async function getPeopleFromDB(options: OptionsData) {
     try {
         const { filter, pagination, skip } = options
-
         const totalCount = await People.countDocuments(filter);
         const people = await People.find(filter)
-            .skip(skip)
-            .limit(pagination.limit > 0 ? pagination.limit : 0)
-
+        .skip(skip)
+        .limit(pagination.limit > 0 ? pagination.limit : 0)
+        
+        console.log(people);
         const totalPages = Math.ceil(totalCount / pagination.limit);
         const nextPage = pagination.page < totalPages ? `${process.env.OUR_URL}/api/people/?page=${pagination.page + 1}` : null;
         const previousPage = pagination.page > 1 ? `${process.env.OUR_URL}/api/people/?page=${pagination.page - 1}` : null;
@@ -35,7 +35,7 @@ export default async function getPeopleFromDB(options: OptionsData) {
 
         return {
             success: false,
-            count: totalCount || null,
+            count: totalCount || 0,
             next: nextPage || null,
             previous: previousPage || null,
             results: people || [],
@@ -48,7 +48,7 @@ export default async function getPeopleFromDB(options: OptionsData) {
 
     return {
         success: false,
-        count: null,
+        count: 0,
         next: null,
         previous: null,
         results: [],

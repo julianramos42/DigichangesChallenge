@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import checkDuplicates from "../../middlewares/starships/checkDuplicates";
 import insertManyStarships from "../../services/starships/create";
 import { StarshipData } from "../../models/Starship";
+import replaceUrlsWithCustom from "../replaceUrlsWithCustom";
 
 interface ApiResponse {
     count: number;
@@ -20,8 +21,11 @@ export default async function createMany(url: string): Promise<void> {
             const data = response.data;
             const starshipList = data.results;
 
+            // Reemplaza las url de la api por la nuestra
+            const starshipListWithOurURL = replaceUrlsWithCustom(starshipList);
+
             // Middleware para evitar repetir documentos
-            const nonDuplicatedPeople = await checkDuplicates(starshipList);
+            const nonDuplicatedPeople = await checkDuplicates(starshipListWithOurURL);
 
             // Función encargada de guardar la lista en la BDD
             let res = await insertManyStarships(nonDuplicatedPeople);

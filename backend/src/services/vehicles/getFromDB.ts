@@ -38,7 +38,7 @@ export default async function getVehiclesFromDB(options: OptionsData) {
 
         return {
             success: false,
-            count: totalCount || null,
+            count: totalCount || 0,
             next: nextPage || null,
             previous: previousPage || null,
             results: vehicle || [],
@@ -51,7 +51,7 @@ export default async function getVehiclesFromDB(options: OptionsData) {
 
     return {
         success: false,
-        count: null,
+        count: 0,
         next: null,
         previous: null,
         results: [],

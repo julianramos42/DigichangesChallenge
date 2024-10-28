@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import checkDuplicates from "../../middlewares/films/checkDuplicates";
 import insertManyFilms from "../../services/films/create";
 import { FilmData } from "../../models/Film";
+import replaceUrlsWithCustom from "../replaceUrlsWithCustom";
 
 interface ApiResponse {
     count: number;
@@ -20,8 +21,11 @@ export default async function createMany(url: string): Promise<void> {
             const data = response.data;
             const filmList = data.results;
 
+            // Reemplaza las url de la api por la nuestra
+            const filmListWithOurURL = replaceUrlsWithCustom(filmList);
+
             // Middleware para evitar repetir documentos
-            const nonDuplicatedPeople = await checkDuplicates(filmList);
+            const nonDuplicatedPeople = await checkDuplicates(filmListWithOurURL);
 
             // Función encargada de guardar la lista en la BDD
             let res = await insertManyFilms(nonDuplicatedPeople);

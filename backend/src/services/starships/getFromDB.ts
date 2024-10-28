@@ -38,7 +38,7 @@ export default async function getStarshipsFromDB(options: OptionsData) {
 
         return {
             success: false,
-            count: totalCount || null,
+            count: totalCount || 0,
             next: nextPage || null,
             previous: previousPage || null,
             results: starship || [],
@@ -51,7 +51,7 @@ export default async function getStarshipsFromDB(options: OptionsData) {
 
     return {
         success: false,
-        count: null,
+        count: 0,
         next: null,
         previous: null,
         results: [],

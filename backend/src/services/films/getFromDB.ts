@@ -35,7 +35,7 @@ export default async function getFilmsFromDB(options: OptionsData) {
 
         return {
             success: false,
-            count: totalCount || null,
+            count: totalCount || 0,
             next: nextPage || null,
             previous: previousPage || null,
             results: film || [],
@@ -48,7 +48,7 @@ export default async function getFilmsFromDB(options: OptionsData) {
 
     return {
         success: false,
-        count: null,
+        count: 0,
         next: null,
         previous: null,
         results: [],

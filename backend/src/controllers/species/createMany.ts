@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import checkDuplicates from "../../middlewares/species/checkDuplicates";
 import insertManySpecies from "../../services/species/create";
 import { SpecieData } from "../../models/Specie";
+import replaceUrlsWithCustom from "../replaceUrlsWithCustom";
 
 interface ApiResponse {
     count: number;
@@ -20,8 +21,11 @@ export default async function createMany(url: string): Promise<void> {
             const data = response.data;
             const specieList = data.results;
 
+            // Reemplaza las url de la api por la nuestra
+            const specieListWithOurURL = replaceUrlsWithCustom(specieList);
+
             // Middleware para evitar repetir documentos
-            const nonDuplicatedPeople = await checkDuplicates(specieList);
+            const nonDuplicatedPeople = await checkDuplicates(specieListWithOurURL);
 
             // Función encargada de guardar la lista en la BDD
             let res = await insertManySpecies(nonDuplicatedPeople);
