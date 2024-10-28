@@ -125,6 +125,45 @@ export default function PlanetsList() {
 
       <main className="flex-grow flex flex-col md:flex-row items-start">
 
+        {/* FILTRO */}
+        <div className="w-full md:w-64 bg-primary p-4 border-r md:h-full">
+
+          <div className="flex justify-between items-center mb-4">
+            <h2 className={`text-lg font-semibold text-primaryForeground ${isMainMenuOpen ? 'block' : 'hidden'} md:block`}>Filter By:</h2>
+            <button className="md:hidden transition-transform duration-300 hover:scale-110" onClick={() => setIsMainMenuOpen(!isMainMenuOpen)}>
+              {isMainMenuOpen ? <X size={24} /> : <FilterIcon size={36} className='rounded shadow p-2' />}
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className={`flex gap-2 flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
+            <div className={`flex flex-wrap gap-2 items-center md:flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
+              {availablesFilters.map((availableFilter, index) => (
+                <div key={index} className="flex flex-col bg-background p-2 m-0 rounded text-foreground">
+                  <label>{availableFilter}:</label>
+                  <input type='text' value={filters[availableFilter] || ''}
+                    onChange={(e) => handleInputChange(e, availableFilter)}
+                    className="border rounded p-1 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className='flex gap-2'>
+              <input
+                type='submit'
+                value={'Search'}
+                className='bg-background font-medium text-foreground px-2 py-1 rounded text-sm w-20 transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105 cursor-pointer'
+              />
+              <button
+                className='bg-background font-medium text-foreground px-2 py-1 rounded text-sm w-20 transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105'
+                onClick={clearFilters}
+              >
+                Clear
+              </button>
+            </div>
+          </form>
+
+        </div>
+
         {/* CARDS SECTION */}
         <section className="flex-grow p-4">
           <h2 className="p-4 font-bold text-3xl text-title">Planets: </h2>
@@ -185,45 +224,6 @@ export default function PlanetsList() {
             </button>
           </div>
         </section>
-
-        {/* FILTRO */}
-        <div className="w-full md:w-64 bg-primary p-4 border-l md:h-full">
-
-          <div className="flex justify-between items-center mb-4">
-            <h2 className={`text-lg font-semibold text-primaryForeground ${isMainMenuOpen ? 'block' : 'hidden'} md:block`}>Filter By:</h2>
-            <button className="md:hidden transition-transform duration-300 hover:scale-110" onClick={() => setIsMainMenuOpen(!isMainMenuOpen)}>
-              {isMainMenuOpen ? <X size={24} /> : <FilterIcon size={36} className='rounded shadow p-2' />}
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className={`flex gap-2 flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
-            <div className={`flex flex-wrap gap-2 items-center md:flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
-              {availablesFilters.map((availableFilter, index) => (
-                <div key={index} className="flex flex-col bg-background p-2 m-0 rounded text-foreground">
-                  <label>{availableFilter}:</label>
-                  <input type='text' value={filters[availableFilter] || ''}
-                    onChange={(e) => handleInputChange(e, availableFilter)}
-                    className="border rounded p-1 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
-                  />
-                </div>
-              ))}
-            </div>
-            <div className='flex gap-2'>
-              <input
-                type='submit'
-                value={'Search'}
-                className='bg-background font-medium text-foreground px-2 py-1 rounded text-sm w-20 transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105 cursor-pointer'
-              />
-              <button
-                className='bg-background font-medium text-foreground px-2 py-1 rounded text-sm w-20 transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105'
-                onClick={clearFilters}
-              >
-                Clear
-              </button>
-            </div>
-          </form>
-
-        </div>
 
       </main>
 

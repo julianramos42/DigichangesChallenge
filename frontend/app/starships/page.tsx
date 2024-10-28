@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { ChevronLeft, ChevronRight, FilterIcon, Menu, X } from 'lucide-react'
+import { ArrowUpDown, ChevronLeft, ChevronRight, FilterIcon, Menu, X } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link';
 import NothingFound from '../components/NothingFound/NothingFound';
@@ -38,6 +38,7 @@ export default function StarshipsList() {
   const [nextPage, setNextPage] = useState('');
   const [previousPage, setPreviousPage] = useState('');
   const [filters, setFilters] = useState<Filters>({});
+  const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC'>('ASC')
 
   async function fetchStarships(page: string) {
     try {
@@ -120,6 +121,10 @@ export default function StarshipsList() {
     fetchStarships(url);
   }
 
+  function toggleSortOrder() {
+    setSortOrder(prevOrder => prevOrder === 'ASC' ? 'DESC' : 'ASC');
+  }
+
   useEffect(() => {
     fetchStarships('');
   }, []);
@@ -151,6 +156,17 @@ export default function StarshipsList() {
                 </div>
               ))}
             </div>
+            {/* <div className='flex gap-2'>
+              <label>Sort by Cost:</label>
+              <button
+                type='button'
+                onClick={toggleSortOrder}
+                className='bg-background font-medium text-foreground px-2 py-1 rounded text-sm flex items-center justify-center transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105'
+              >
+                <ArrowUpDown size={16} className="mr-1" />
+                {sortOrder}
+              </button>
+            </div> */}
             <div className='flex gap-2'>
               <input
                 type='submit'
@@ -184,12 +200,16 @@ export default function StarshipsList() {
                         <p>{item.model.charAt(0).toUpperCase() + item.model.slice(1)}</p>
                       </div>
                       <div className="text-md flex gap-2">
-                        <h5 className='font-semibold'>Director:</h5>
+                        <h5 className='font-semibold'>Class:</h5>
                         <p>{item.starship_class.charAt(0).toUpperCase() + item.starship_class.slice(1)}</p>
                       </div>
                       <div className="text-md flex gap-2">
                         <h5 className='font-semibold'>Manufacturer:</h5>
                         <p>{item.manufacturer.charAt(0).toUpperCase() + item.manufacturer.slice(1)}</p>
+                      </div>
+                      <div className="text-md flex gap-2">
+                        <h5 className='font-semibold'>Cost:</h5>
+                        <p>{item.cost_in_credits.charAt(0).toUpperCase() + item.cost_in_credits.slice(1)}</p>
                       </div>
                       <Link
                         href={`/starships/${item.url.split('/')[item.url.split('/').length - 2]}`} // divide la url en secciones y obtenemos el numero que esta entre los / / finales
