@@ -3,7 +3,7 @@ import getPeopleFromDB from "../../services/people/getFromDB";
 
 interface PeopleFilters {
     name?: RegExp;
-    gender?: RegExp;
+    gender?: string;
     url?: string;
 }
 
@@ -23,7 +23,7 @@ export default async function getPeople(req: Request, res: Response, next: NextF
         }
 
         if (typeof req.query.gender === "string") {
-            filter.gender = new RegExp(req.query.gender.trim(), "i");
+            filter.gender = req.query.gender;
         }
 
         if (typeof req.query.url === "string") {
