@@ -131,7 +131,7 @@ export default function PlanetsList() {
 
           {
             planets.length ?
-              <div className="flex-grow p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="flex-grow p-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
                   planets.map((item, index) => (
                     <div key={index} className="bg-card text-cardForeground p-4 rounded-lg shadow min-h-20 transition-all duration-300 hover:scale-105 hover:shadow-lg">
