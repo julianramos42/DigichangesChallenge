@@ -1,29 +1,13 @@
 import app from '../src/app';
-import debug from 'debug';
-import http from 'http';
 
-let port = normalizePort(process.env.PORT || '4000');
+let port = Number(process.env.PORT) || 8080;
 app.set('port', port);
 
-let server = http.createServer(app);
+const server = app.listen(port, '0.0.0.0', () => {
+  console.log(`Server ready on port ${port}`);
+});
 
-server.listen(port, () => console.log("Server ready on port " + port));
 server.on('error', onError);
-server.on('listening', onListening);
-
-function normalizePort(val: string): string | number | false {
-  let port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-
-  if (port >= 0) {
-    return port;
-  }
-
-  return false;
-}
 
 function onError(error: NodeJS.ErrnoException): void {
   if (error.syscall !== 'listen') {
@@ -46,17 +30,4 @@ function onError(error: NodeJS.ErrnoException): void {
     default:
       throw error;
   }
-}
-
-function onListening(): void {
-  let addr = server.address();
-
-  if (addr === null) {
-    return;
-  }
-
-  let bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
 }
