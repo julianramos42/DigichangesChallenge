@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Header() {
   const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false)
-  const categories = ['People', "Films", "Planets", "Starships", "Species", "Vehicles"];
+  const categories = ["Films", 'People', "Planets", "Starships", "Species", "Vehicles"];
 
   return (
     <header className="bg-primary text-primaryForeground p-4 border-b md:h-[10vh] flex flex-col gap-4 sm:gap-0 sm:flex-row sm:justify-between sm:items-center">
