@@ -27,7 +27,7 @@ export default async function getPeople(req: Request, res: Response, next: NextF
         }
 
         if (typeof req.query.url === "string") {
-            filter.url = req.query.url;
+            filter.url = `https://swapi.dev/api/people/${req.query.url}/`;
         }
 
         const data = await getPeopleFromDB({ filter, pagination, skip });

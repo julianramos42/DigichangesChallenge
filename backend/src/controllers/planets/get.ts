@@ -32,7 +32,7 @@ export default async function getPlanets(req: Request, res: Response, next: Next
         }
 
         if (typeof req.query.url === "string") {
-            filter.url = req.query.url;
+            filter.url = `https://swapi.dev/api/planets/${req.query.url}/`;
         }
 
         const data = await getPlanetsFromDB({ filter, pagination, skip });

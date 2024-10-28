@@ -47,7 +47,7 @@ export default async function getStarships(req: Request, res: Response, next: Ne
         }
 
         if (typeof req.query.url === "string") {
-            filter.url = req.query.url;
+            filter.url = `https://swapi.dev/api/starships/${req.query.url}/`;
         }
 
         const data = await getStarshipsFromDB({ filter, pagination, skip, sort });

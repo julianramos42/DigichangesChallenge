@@ -54,7 +54,7 @@ export default async function getVehicles(req: Request, res: Response, next: Nex
         }
 
         if (typeof req.query.url === "string") {
-            filter.url = req.query.url;
+            filter.url = `https://swapi.dev/api/vehicles/${req.query.url}/`;
         }
 
         const data = await getVehiclesFromDB({ filter, pagination, skip, sort });

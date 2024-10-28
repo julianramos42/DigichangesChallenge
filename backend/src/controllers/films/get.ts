@@ -44,7 +44,7 @@ export default async function getFilms(req: Request, res: Response, next: NextFu
         }
 
         if (typeof req.query.url === "string") {
-            filter.url = req.query.url;
+            filter.url = `https://swapi.dev/api/films/${req.query.url}/`;
         }
 
         const data = await getFilmsFromDB({ filter, pagination, skip });
