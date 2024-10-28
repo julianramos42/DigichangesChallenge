@@ -3,8 +3,6 @@ import getPeopleFromDB from "../../services/people/getFromDB";
 
 interface PeopleFilters {
     name?: RegExp;
-    height?: RegExp;
-    mass?: RegExp;
     gender?: RegExp;
     url?: string;
 }
@@ -19,14 +17,6 @@ export default async function getPeople(req: Request, res: Response, next: NextF
         };
 
         let skip = (pagination.page - 1) * pagination.limit;
-
-        if (typeof req.query.mass === "string") {
-            filter.mass = new RegExp(req.query.mass.trim(), "i");
-        }
-
-        if (typeof req.query.height === "string") {
-            filter.height = new RegExp(req.query.height.trim(), "i");
-        }
 
         if (typeof req.query.name === "string") {
             filter.name = new RegExp(req.query.name.trim(), "i");
