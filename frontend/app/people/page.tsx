@@ -28,7 +28,7 @@ const availablesFilters = ['Name', 'Gender'];
 type FilterKeys = typeof availablesFilters[number];
 type Filters = Partial<Record<FilterKeys, string>>;
 
-export default function Component() {
+export default function PeopleList() {
   const [isMainMenuOpen, setIsMainMenuOpen] = useState(false);
   const [people, setPeople] = useState<PeopleData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,6 +47,7 @@ export default function Component() {
 
       const res = await axios.get(url);
       const data = res.data;
+
       setNextPage(data.next);
       setPreviousPage(data.previous);
       setPeople(data.results);
@@ -107,12 +108,21 @@ export default function Component() {
     }
   }
 
+  function clearFilters(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+
+    setFilters({});
+
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/people?page=${currentPage}`;
+    fetchPeople(url);
+  }
+
   useEffect(() => {
     fetchPeople('');
   }, []);
 
   return (
-    <div className="md:h-[80vh] flex flex-col">
+    <div className="md:h-[90vh] flex flex-col">
 
       <main className="flex-grow flex flex-col md:flex-row items-start">
 
@@ -125,9 +135,11 @@ export default function Component() {
               <div className="flex-grow p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {
                   people.map((item, index) => (
-                    <div key={index} className="bg-card text-cardForeground p-4 rounded-lg shadow min-h-20">
+                    <div key={index} className="bg-card text-cardForeground p-4 rounded-lg shadow min-h-20 transition-all duration-300 hover:scale-105 hover:shadow-lg">
                       <h3 className="text-lg font-semibold">{item.name}</h3>
-                      <Link href={''}><button className="text-sm text-muted">See Details</button></Link>
+                      <Link
+                        href={`/people/${item.url.split('/')[item.url.split('/').length-2]}`} // divide la url en secciones y obtenemos el numero que esta entre los / / finales
+                      ><button className="text-sm text-muted rounded shadow-md p-2 hover:text-primaryForeground transition-colors duration-300">See Details</button></Link>
                     </div>
                   ))
                 }
@@ -146,7 +158,7 @@ export default function Component() {
             <button
               onClick={() => handlePageChange('prev')}
               disabled={!previousPage}
-              className={`p-2 rounded ${previousPage ? 'bg-gray-300 text-foreground' : 'bg-gray-100 text-gray-400'}`}
+              className={`p-2 rounded ${previousPage ? 'bg-primary text-primaryForeground hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-110' : 'bg-gray-100 text-gray-400'}`}
             >
               <ChevronLeft size={20} />
             </button>
@@ -156,7 +168,7 @@ export default function Component() {
                 key={page}
                 onClick={() => handlePageChange(page)}
                 hidden={page < 1 || (page > currentPage && !nextPage)}
-                className={`w-8 h-8 rounded ${page === currentPage ? 'bg-primary text-primaryForeground' : 'bg-gray-300 text-foreground'}`}
+                className={`w-8 h-8 rounded ${page === currentPage ? 'bg-gray-200 text-foreground' : 'hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-110'}`}
               >
                 {page}
               </button>
@@ -165,7 +177,7 @@ export default function Component() {
             <button
               onClick={() => handlePageChange('next')}
               disabled={!nextPage}
-              className={`p-2 rounded ${nextPage ? 'bg-gray-300 text-foreground' : 'bg-gray-200 text-gray-400'}`}
+              className={`p-2 rounded ${nextPage ? 'bg-primary text-primaryForeground hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-110' : 'bg-gray-200 text-gray-400'}`}
             >
               <ChevronRight size={20} />
             </button>
@@ -177,7 +189,7 @@ export default function Component() {
 
           <div className="flex justify-between items-center mb-4">
             <h2 className={`text-lg font-semibold text-primaryForeground ${isMainMenuOpen ? 'block' : 'hidden'} md:block`}>Filter By:</h2>
-            <button className="md:hidden" onClick={() => setIsMainMenuOpen(!isMainMenuOpen)}>
+            <button className="md:hidden transition-transform duration-300 hover:scale-110" onClick={() => setIsMainMenuOpen(!isMainMenuOpen)}>
               {isMainMenuOpen ? <X size={24} /> : <FilterIcon size={36} className='rounded shadow p-2' />}
             </button>
           </div>
@@ -189,11 +201,24 @@ export default function Component() {
                   <label>{availableFilter}:</label>
                   <input type='text' value={filters[availableFilter] || ''}
                     onChange={(e) => handleInputChange(e, availableFilter)}
-                    className="border rounded p-1" />
+                    className="border rounded p-1 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
+                  />
                 </div>
               ))}
             </div>
-            <input type='submit' value={'Search'} className='bg-background font-semibold text-foreground px-2 py-1 rounded text-sm w-20' />
+            <div className='flex gap-2'>
+              <input
+                type='submit'
+                value={'Search'}
+                className='bg-background font-medium text-foreground px-2 py-1 rounded text-sm w-20 transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105 cursor-pointer'
+              />
+              <button
+                className='bg-background font-medium text-foreground px-2 py-1 rounded text-sm w-20 transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105'
+                onClick={clearFilters}
+              >
+                Clear
+              </button>
+            </div>
           </form>
 
         </div>

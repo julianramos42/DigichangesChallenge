@@ -17,7 +17,7 @@ export default function Header() {
       <div className="hidden md:flex items-center space-x-4">
         <div className="flex space-x-2">
           {categories.map((categorie, index) => (
-            <div key={index} className="bg-background font-medium text-foreground px-2 py-1 rounded text-sm">
+            <div key={index} className="bg-background font-medium text-foreground px-2 py-1 rounded text-sm transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105 cursor-pointer">
               <Link href={`/${categorie.toLowerCase()}`}>{categorie}</Link>
             </div>
           ))}
@@ -29,7 +29,7 @@ export default function Header() {
           <div>
             <div className="flex flex-wrap gap-2">
               {categories.map((categorie, index) => (
-                <div key={index} className="bg-background font-medium text-foreground px-2 py-1 rounded text-sm">
+                <div key={index} className="bg-background font-medium text-foreground px-2 py-1 rounded text-sm transition-all duration-300 hover:bg-primaryDark hover:text-primaryDarkForeground hover:scale-105 cursor-pointer">
                   <Link href={`/${categorie.toLowerCase()}`}>{categorie}</Link>
                 </div>
               ))}
