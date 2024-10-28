@@ -22,7 +22,7 @@ export default async function getPlanetsFromDB(options: OptionsData) {
         const nextPage = pagination.page < totalPages ? `${process.env.OUR_URL}/api/planets/?page=${pagination.page + 1}` : null;
         const previousPage = pagination.page > 1 ? `${process.env.OUR_URL}/api/planets/?page=${pagination.page - 1}` : null;
 
-        if (planet) {
+        if (planet.length) {
             return {
                 success: true,
                 count: totalCount,

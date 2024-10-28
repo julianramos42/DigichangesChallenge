@@ -22,7 +22,7 @@ export default async function getSpeciesFromDB(options: OptionsData) {
         const nextPage = pagination.page < totalPages ? `${process.env.OUR_URL}/api/species/?page=${pagination.page + 1}` : null;
         const previousPage = pagination.page > 1 ? `${process.env.OUR_URL}/api/species/?page=${pagination.page - 1}` : null;
 
-        if (specie) {
+        if (specie.length) {
             return {
                 success: true,
                 count: totalCount,

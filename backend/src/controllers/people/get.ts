@@ -3,11 +3,8 @@ import getPeopleFromDB from "../../services/people/getFromDB";
 
 interface PeopleFilters {
     name?: RegExp;
-    height?: number;
-    mass?: number;
-    hair_color?: RegExp;
-    skin_color?: RegExp;
-    eye_color?: RegExp;
+    height?: RegExp;
+    mass?: RegExp;
     gender?: RegExp;
 }
 
@@ -22,28 +19,16 @@ export default async function getPeople(req: Request, res: Response, next: NextF
 
         let skip = (pagination.page - 1) * pagination.limit;
 
-        if (typeof req.query.height === "number") {
-            filter.height = req.query.height;
+        if (typeof req.query.mass === "string") {
+            filter.mass = new RegExp(req.query.mass.trim(), "i");
         }
 
-        if (typeof req.query.mass === "number") {
-            filter.mass = req.query.mass;
+        if (typeof req.query.height === "string") {
+            filter.height = new RegExp(req.query.height.trim(), "i");
         }
 
         if (typeof req.query.name === "string") {
             filter.name = new RegExp(req.query.name.trim(), "i");
-        }
-
-        if (typeof req.query.hair_color === "string") {
-            filter.hair_color = new RegExp(req.query.hair_color.trim(), "i");
-        }
-
-        if (typeof req.query.skin_color === "string") {
-            filter.skin_color = new RegExp(req.query.skin_color.trim(), "i");
-        }
-
-        if (typeof req.query.eye_color === "string") {
-            filter.eye_color = new RegExp(req.query.eye_color.trim(), "i");
         }
 
         if (typeof req.query.gender === "string") {

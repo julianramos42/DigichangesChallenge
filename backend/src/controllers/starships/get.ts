@@ -36,12 +36,13 @@ export default async function getStarships(req: Request, res: Response, next: Ne
             filter.manufacturer = new RegExp(req.query.manufacturer.trim(), "i");
         }
 
-        let sort: SortOrder = 1;
-        if(Number(req.query.cost_in_credits) === 1){ // ASC
-            sort = 1;
-        }
-        if(Number(req.query.cost_in_credits) === 0){ // DES
-            sort = -1;
+        let sort: { [key: string]: SortOrder } = {};
+
+        // Verifica el orden para cost_in_credits
+        if (Number(req.query.cost_in_credits) === 1) { // ASC
+            sort.cost_in_credits = 1;
+        } else if (Number(req.query.cost_in_credits) === 0) { // DES
+            sort.cost_in_credits = -1;
         }
 
         const data = await getStarshipsFromDB({ filter, pagination, skip, sort });

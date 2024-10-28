@@ -8,7 +8,7 @@ interface OptionsData {
         limit: number
     },
     skip: number,
-    sort: SortOrder
+    sort: { [key: string]: SortOrder }
 }
 
 export default async function getStarshipsFromDB(options: OptionsData) {
@@ -19,13 +19,13 @@ export default async function getStarshipsFromDB(options: OptionsData) {
         const starship = await Starship.find(filter)
             .skip(skip)
             .limit(pagination.limit > 0 ? pagination.limit : 0)
-            .sort({cost_in_credits: sort})
+            .sort(sort)
 
         const totalPages = Math.ceil(totalCount / pagination.limit);
         const nextPage = pagination.page < totalPages ? `${process.env.OUR_URL}/api/starships/?page=${pagination.page + 1}` : null;
         const previousPage = pagination.page > 1 ? `${process.env.OUR_URL}/api/starships/?page=${pagination.page - 1}` : null;
 
-        if (starship) {
+        if (starship.length) {
             return {
                 success: true,
                 count: totalCount,

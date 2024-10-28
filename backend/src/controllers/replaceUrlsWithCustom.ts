@@ -1,4 +1,6 @@
 // Función para reemplazar URLs en arrays y objetos
+
+// Sinceramente no pude hacer esta función sin el uso de any.
 export default function replaceUrlsWithCustom(obj: any): any {
     // Si el objeto tiene la propiedad 'url', la reemplaza
     if (obj.url && typeof obj.url === 'string') {

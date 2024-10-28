@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import checkDuplicates from "../../middlewares/planets/checkDuplicates";
 import insertManyPlanets from "../../services/planets/create";
 import { PlanetData } from "../../models/Planet";
-import replaceUrlsWithCustom from "../replaceUrlsWithCustom";
+//import replaceUrlsWithCustom from "../replaceUrlsWithCustom";
 
 interface ApiResponse {
     count: number;
@@ -22,10 +22,10 @@ export default async function createMany(url: string): Promise<void> {
             const planetList = data.results;
 
             // Reemplaza las url de la api por la nuestra
-            const planetListWithOurURL = replaceUrlsWithCustom(planetList);
+            //const planetListWithOurURL = replaceUrlsWithCustom(planetList);
 
             // Middleware para evitar repetir documentos
-            const nonDuplicatedPeople = await checkDuplicates(planetListWithOurURL);
+            const nonDuplicatedPeople = await checkDuplicates(planetList);
 
             // Función encargada de guardar la lista en la BDD
             let res = await insertManyPlanets(nonDuplicatedPeople);

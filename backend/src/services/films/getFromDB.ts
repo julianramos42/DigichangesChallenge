@@ -22,7 +22,7 @@ export default async function getFilmsFromDB(options: OptionsData) {
         const nextPage = pagination.page < totalPages ? `${process.env.OUR_URL}/api/films/?page=${pagination.page + 1}` : null;
         const previousPage = pagination.page > 1 ? `${process.env.OUR_URL}/api/films/?page=${pagination.page - 1}` : null;
 
-        if (film) {
+        if (film.length) {
             return {
                 success: true,
                 count: totalCount,

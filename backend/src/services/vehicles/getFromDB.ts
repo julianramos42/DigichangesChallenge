@@ -25,7 +25,7 @@ export default async function getVehiclesFromDB(options: OptionsData) {
         const nextPage = pagination.page < totalPages ? `${process.env.OUR_URL}/api/vehicles/?page=${pagination.page + 1}` : null;
         const previousPage = pagination.page > 1 ? `${process.env.OUR_URL}/api/vehicles/?page=${pagination.page - 1}` : null;
 
-        if (vehicle) {
+        if (vehicle.length) {
             return {
                 success: true,
                 count: totalCount,

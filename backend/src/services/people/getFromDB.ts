@@ -17,12 +17,11 @@ export default async function getPeopleFromDB(options: OptionsData) {
         .skip(skip)
         .limit(pagination.limit > 0 ? pagination.limit : 0)
         
-        console.log(people);
         const totalPages = Math.ceil(totalCount / pagination.limit);
         const nextPage = pagination.page < totalPages ? `${process.env.OUR_URL}/api/people/?page=${pagination.page + 1}` : null;
         const previousPage = pagination.page > 1 ? `${process.env.OUR_URL}/api/people/?page=${pagination.page - 1}` : null;
 
-        if (people) {
+        if (people.length) {
             return {
                 success: true,
                 count: totalCount,

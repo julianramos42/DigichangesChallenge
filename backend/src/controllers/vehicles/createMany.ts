@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import checkDuplicates from "../../middlewares/vehicles/checkDuplicates";
 import insertManyVehicles from "../../services/vehicles/create";
 import { VehicleData } from "../../models/Vehicle";
-import replaceUrlsWithCustom from "../replaceUrlsWithCustom";
+//import replaceUrlsWithCustom from "../replaceUrlsWithCustom";
 
 interface ApiResponse {
     count: number;
@@ -22,10 +22,10 @@ export default async function createMany(url: string): Promise<void> {
             const vehicleList = data.results;
 
             // Reemplaza las url de la api por la nuestra
-            const vehicleListWithOurURL = replaceUrlsWithCustom(vehicleList);
+            //const vehicleListWithOurURL = replaceUrlsWithCustom(vehicleList);
 
             // Middleware para evitar repetir documentos
-            const nonDuplicatedPeople = await checkDuplicates(vehicleListWithOurURL);
+            const nonDuplicatedPeople = await checkDuplicates(vehicleList);
 
             // Función encargada de guardar la lista en la BDD
             let res = await insertManyVehicles(nonDuplicatedPeople);
