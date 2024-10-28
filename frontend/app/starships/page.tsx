@@ -145,7 +145,7 @@ export default function StarshipsList() {
           </div>
 
           <form onSubmit={handleSubmit} className={`flex gap-2 flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
-            <div className={`flex flex-wrap gap-2 items-center md:flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
+            <div className={`flex flex-wrap gap-2 items-center md:items-start md:flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
               {availablesFilters.map((availableFilter, index) => (
                 <div key={index} className="flex flex-col bg-background p-2 m-0 rounded text-foreground">
                   <label>{availableFilter}:</label>

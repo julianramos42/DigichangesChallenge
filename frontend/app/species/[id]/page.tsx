@@ -7,30 +7,31 @@ import Link from 'next/link'
 
 type Params = Promise<{ id: string }>
 
-interface PeopleData {
+interface SpecieData {
     name: string;
-    height: string;
-    mass: string;
-    hair_color: string;
-    skin_color: string;
-    eye_color: string;
-    birth_year: string;
-    gender: string;
+    classification: string;
+    designation: string;
+    average_height: string;
+    average_lifespan: string;
+    eye_colors: string;
+    hair_colors: string;
+    skin_colors: string;
+    language: string;
     homeworld?: string;
+    people: string[];
     films: string[];
-    species: string[];
-    vehicles: string[];
-    starships: string[];
     url: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
-export default function PeopleDetail(props: { params: Params }) {
-    const [people, setPeople] = useState<PeopleData | null>(null);
+export default function SpecieDetail(props: { params: Params }) {
+    const [specie, setSpecie] = useState<SpecieData | null>(null);
     const { id } = use(props.params);
 
-    async function fetchPeople() {
+    async function fetchSpecie() {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/people?url=${id}`);
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/species?url=${id}`);
             const itemData = res.data.results[0]
             // Elimina propiedades que no necesitamos o no queremos exponer
             delete itemData._id
@@ -38,32 +39,32 @@ export default function PeopleDetail(props: { params: Params }) {
             delete itemData.updatedAt
             delete itemData.url
             delete itemData.__v
-            setPeople(itemData);
+            setSpecie(itemData);
         } catch (err) {
-            console.error('Error fetching character:', err);
-            setPeople(null)
+            console.error('Error fetching specie:', err);
+            setSpecie(null)
         }
     }
 
     useEffect(() => {
-        fetchPeople();
+        fetchSpecie();
     }, [id]);
 
-    if (!people) {
+    if (!specie) {
         return <div className="flex justify-center items-center h-[90vh]">Loading...</div>;
     }
 
     return (
         <div className="min-h-screen bg-primary p-8">
-            <Link href="/people" className="inline-flex items-center text-title hover:text-black transition-colors mb-6">
+            <Link href="/species" className="inline-flex items-center text-title hover:text-black transition-colors mb-6">
                 <ChevronLeft className="mr-2" />
-                Back to People
+                Back to Species
             </Link>
-            <h1 className="text-4xl font-bold mb-6 text-center">{people.name}</h1>
+            <h1 className="text-4xl font-bold mb-6 text-center">{specie.name}</h1>
             <div className="max-w-4xl mx-auto bg-card border shadow-2xl rounded-lg overflow-hidden">
                 <table className="w-full">
                     <tbody>
-                        {Object.entries(people).map(([key, value]) => {
+                        {Object.entries(specie).map(([key, value]) => {
                             return (
                                 <tr key={key} className="border-b last:border-b-0">
                                     <th className="text-left p-4 bg-primary text-primaryForeground font-semibold capitalize">{key.replace('_', ' ')}</th>

@@ -1,15 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { ChevronLeft } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link'
 
-interface Params {
-    params: {
-        id: string;
-    };
-}
+type Params = Promise<{ id: string }>
 
 interface StarshipData {
     name: string;
@@ -32,9 +28,9 @@ interface StarshipData {
     updatedAt?: Date;
 }
 
-export default function StarshipDetail({ params }: Params) {
+export default function StarshipDetail(props: { params: Params }) {
     const [starship, setStarship] = useState<StarshipData | null>(null);
-    const { id } = params;
+    const { id } = use(props.params);
 
     async function fetchStarship() {
         try {

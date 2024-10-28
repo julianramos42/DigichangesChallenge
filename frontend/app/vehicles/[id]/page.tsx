@@ -1,15 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { ChevronLeft } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link'
 
-interface Params {
-    params: {
-        id: string;
-    };
-}
+type Params = Promise<{ id: string }>
 
 interface VehicleData {
     name: string;
@@ -30,9 +26,9 @@ interface VehicleData {
     updatedAt?: Date;
 }
 
-export default function VehicleDetail({ params }: Params) {
+export default function VehicleDetail(props: { params: Params }) {
     const [vehicle, setVehicle] = useState<VehicleData | null>(null);
-    const { id } = params;
+    const { id } = use(props.params);
 
     async function fetchVehicle() {
         try {

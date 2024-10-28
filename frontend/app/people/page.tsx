@@ -138,7 +138,7 @@ export default function PeopleList() {
           </div>
 
           <form onSubmit={handleSubmit} className={`flex gap-2 flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
-            <div className={`flex flex-wrap gap-2 items-center md:flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
+            <div className={`flex flex-wrap gap-2 items-center md:items-start md:flex-col ${isMainMenuOpen ? 'flex' : 'hidden'} md:flex`}>
               {availablesFilters.map((availableFilter, index) => (
                 <div key={index} className="flex flex-col bg-background p-2 m-0 rounded text-foreground">
                   <label>{availableFilter}:</label>
@@ -177,7 +177,10 @@ export default function PeopleList() {
                   people.map((item, index) => (
                     <div key={index} className="bg-card text-cardForeground p-4 rounded-lg shadow min-h-20 transition-all duration-300 hover:scale-105 hover:shadow-lg">
                       <h3 className="text-lg font-semibold">{item.name}</h3>
-                      <h5 className="text-lg font-normal">Gender: {item.gender.charAt(0).toUpperCase() + item.gender.slice(1)}</h5>
+                      <div className="text-md flex gap-2">
+                        <h5 className='font-semibold'>Gender:</h5>
+                        <p>{item.gender.charAt(0).toUpperCase() + item.gender.slice(1)}</p>
+                      </div>
                       <Link
                         href={`/people/${item.url.split('/')[item.url.split('/').length - 2]}`} // divide la url en secciones y obtenemos el numero que esta entre los / / finales
                       ><button className="text-sm text-muted rounded shadow-md p-2 hover:text-primaryForeground transition-colors duration-300">See Details</button></Link>

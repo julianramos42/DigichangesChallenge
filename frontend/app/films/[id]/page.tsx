@@ -1,15 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { ChevronLeft } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link'
 
-interface Params {
-    params: {
-        id: string;
-    };
-}
+type Params = Promise<{ id: string }>
 
 interface FilmData {
     title: string;
@@ -28,9 +24,9 @@ interface FilmData {
     updatedAt?: Date;
 }
 
-export default function FilmDetail({ params }: Params) {
+export default function FilmDetail(props: { params: Params }) {
     const [film, setFilm] = useState<FilmData | null>(null);
-    const { id } = params;
+    const { id } = use(props.params);
 
     async function fetchFilm() {
         try {

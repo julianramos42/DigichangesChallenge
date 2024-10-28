@@ -6,59 +6,60 @@ import axios from 'axios'
 import Link from 'next/link';
 import NothingFound from '../components/NothingFound/NothingFound';
 
-interface FilmData {
-  title: string;
-  episode_id: number;
-  opening_crawl: string;
-  director: string;
-  producer: string;
-  release_date: Date;
-  species: string[];
-  starships: string[];
-  vehicles: string[];
-  characters: string[];
-  planets: string[];
-  url: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+interface SpecieData {
+    name: string;
+    classification: string;
+    designation: string;
+    average_height: string;
+    average_lifespan: string;
+    eye_colors: string;
+    hair_colors: string;
+    skin_colors: string;
+    language: string;
+    homeworld?: string;
+    people: string[];
+    films: string[];
+    url: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
-const availablesFilters = ['Title', 'Episode_Id', 'Director', 'Producer', 'Release_Date'];
+const availablesFilters = ['Name', 'Classification', 'Designation', 'Language'];
 type FilterKeys = typeof availablesFilters[number];
 type Filters = Partial<Record<FilterKeys, string>>;
 
-export default function FilmsList() {
+export default function SpeciesList() {
   const [isMainMenuOpen, setIsMainMenuOpen] = useState(false);
-  const [films, setFilms] = useState<FilmData[]>([]);
+  const [species, setSpecies] = useState<SpecieData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [nextPage, setNextPage] = useState('');
   const [previousPage, setPreviousPage] = useState('');
   const [filters, setFilters] = useState<Filters>({});
 
-  async function fetchFilms(page: string) {
+  async function fetchSpecies(page: string) {
     try {
       const filteredFilters = Object.fromEntries(
         Object.entries(filters).filter(([_, value]) => value !== undefined).map(([key, value]) => [key.toLowerCase(), value?.toLowerCase()])
       ) as Record<string, string>;
 
       const queryString = new URLSearchParams(filteredFilters).toString();
-      const url = page ? page : `${process.env.NEXT_PUBLIC_API_URL}/films?${queryString}`;
+      const url = page ? page : `${process.env.NEXT_PUBLIC_API_URL}/species?${queryString}`;
 
       const res = await axios.get(url);
       const data = res.data;
 
       setNextPage(data.next);
       setPreviousPage(data.previous);
-      setFilms(data.results);
+      setSpecies(data.results);
     } catch (err) {
       console.log('Error:' + err);
-      setFilms([]);
+      setSpecies([]);
     }
   }
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    fetchFilms('');
+    fetchSpecies('');
   }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>, filter: FilterKeys) {
@@ -84,10 +85,10 @@ export default function FilmsList() {
       ) as Record<string, string>;
 
       const queryString = new URLSearchParams(filteredFilters).toString();
-      const url = queryString.includes('page') ? `${process.env.NEXT_PUBLIC_API_URL}/films?${queryString}` : `${process.env.NEXT_PUBLIC_API_URL}/films?page=${page}${queryString}`;
+      const url = queryString.includes('page') ? `${process.env.NEXT_PUBLIC_API_URL}/species?${queryString}` : `${process.env.NEXT_PUBLIC_API_URL}/species?page=${page}${queryString}`;
       setCurrentPage(page);
 
-      fetchFilms(url);
+      fetchSpecies(url);
     } else if (page === 'next' && nextPage) {
       setCurrentPage(currentPage + 1);
       const pageNumber = nextPage.slice(-1);
@@ -95,7 +96,7 @@ export default function FilmsList() {
         ...filters,
         page: String(pageNumber)
       })
-      fetchFilms(nextPage);
+      fetchSpecies(nextPage);
     } else if (page === 'prev' && previousPage) {
       setCurrentPage(currentPage - 1);
       const pageNumber = previousPage.slice(-1);
@@ -103,7 +104,7 @@ export default function FilmsList() {
         ...filters,
         page: String(pageNumber)
       })
-      fetchFilms(previousPage);
+      fetchSpecies(previousPage);
     }
   }
 
@@ -112,18 +113,18 @@ export default function FilmsList() {
 
     setFilters({});
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/films?page=${currentPage}`;
-    fetchFilms(url);
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/species?page=${currentPage}`;
+    fetchSpecies(url);
   }
 
   useEffect(() => {
-    fetchFilms('');
+    fetchSpecies('');
   }, []);
 
   return (
     <div className="md:h-[90vh] flex flex-col">
 
-      <main className="flex-grow flex flex-col md:flex-row items-start">
+      <main className="flex-grow flex flex-col items-center md:items-start md:flex-row">
 
         {/* FILTRO */}
         <div className="w-full md:w-64 bg-primary p-4 border-r md:h-full">
@@ -166,33 +167,29 @@ export default function FilmsList() {
 
         {/* CARDS SECTION */}
         <section className="flex-grow p-4">
-          <h2 className="p-4 font-bold text-3xl text-title">Films: </h2>
+          <h2 className="p-4 font-bold text-3xl text-title">Species: </h2>
 
           {
-            films.length ?
+            species.length ?
               <div className="flex-grow p-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  films.map((item, index) => (
+                  species.map((item, index) => (
                     <div key={index} className="bg-card text-cardForeground p-4 rounded-lg shadow min-h-20 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                      <h3 className="text-lg font-bold">{item.title}</h3>
+                      <h3 className="text-lg font-semibold">{item.name}</h3>
                       <div className="text-md flex gap-2">
-                        <h5 className='font-semibold'>Episode:</h5>
-                        <p>{item.episode_id}</p>
+                        <h5 className='font-semibold'>Classification:</h5>
+                        <p>{item.classification.charAt(0).toUpperCase() + item.classification.slice(1)}</p>
                       </div>
                       <div className="text-md flex gap-2">
-                        <h5 className='font-semibold'>Director:</h5>
-                        <p>{item.director.charAt(0).toUpperCase() + item.director.slice(1)}</p>
+                        <h5 className='font-semibold'>Designation:</h5>
+                        <p>{item.designation.charAt(0).toUpperCase() + item.designation.slice(1)}</p>
                       </div>
                       <div className="text-md flex gap-2">
-                        <h5 className='font-semibold'>Producer:</h5>
-                        <p>{item.producer.charAt(0).toUpperCase() + item.producer.slice(1)}</p>
-                      </div>
-                      <div className="text-md flex gap-2">
-                        <h5 className='font-semibold'>Release Date:</h5>
-                        <p>{new Date(item.release_date).getFullYear()}</p>
+                        <h5 className='font-semibold'>Language:</h5>
+                        <p>{item.language.charAt(0).toUpperCase() + item.language.slice(1)}</p>
                       </div>
                       <Link
-                        href={`/films/${item.url.split('/')[item.url.split('/').length - 2]}`} // divide la url en secciones y obtenemos el numero que esta entre los / / finales
+                        href={`/species/${item.url.split('/')[item.url.split('/').length - 2]}`} // divide la url en secciones y obtenemos el numero que esta entre los / / finales
                       ><button className="text-sm text-muted rounded shadow-md p-2 hover:text-primaryForeground transition-colors duration-300">See Details</button></Link>
                     </div>
                   ))
