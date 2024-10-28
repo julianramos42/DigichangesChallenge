@@ -5,6 +5,7 @@ interface PlanetFilters {
     name?: RegExp;
     climate?: RegExp;
     terrain?: RegExp;
+    url?: string;
 }
 
 export default async function getPlanets(req: Request, res: Response, next: NextFunction) {
@@ -28,6 +29,10 @@ export default async function getPlanets(req: Request, res: Response, next: Next
 
         if (typeof req.query.terrain === "string") {
             filter.terrain = new RegExp(req.query.terrain.trim(), "i");
+        }
+
+        if (typeof req.query.url === "string") {
+            filter.url = req.query.url;
         }
 
         const data = await getPlanetsFromDB({ filter, pagination, skip });

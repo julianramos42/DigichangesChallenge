@@ -7,6 +7,7 @@ interface StarshipFilters {
     model?: RegExp;
     starship_class?: RegExp;
     manufacturer?: RegExp;
+    url?: string;
 }
 
 export default async function getStarships(req: Request, res: Response, next: NextFunction) {
@@ -43,6 +44,10 @@ export default async function getStarships(req: Request, res: Response, next: Ne
             sort.cost_in_credits = 1;
         } else if (Number(req.query.cost_in_credits) === 0) { // DES
             sort.cost_in_credits = -1;
+        }
+
+        if (typeof req.query.url === "string") {
+            filter.url = req.query.url;
         }
 
         const data = await getStarshipsFromDB({ filter, pagination, skip, sort });

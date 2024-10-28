@@ -7,6 +7,7 @@ interface VehiclesFilters {
     model?: RegExp;
     vehicle_class?: RegExp;
     manufacturer?: RegExp;
+    url?: string;
 }
 
 export default async function getVehicles(req: Request, res: Response, next: NextFunction) {
@@ -50,6 +51,10 @@ export default async function getVehicles(req: Request, res: Response, next: Nex
             sort.cargo_capacity = 1;
         } else if (Number(req.query.cargo_capacity) === 0) { // DES
             sort.cargo_capacity = -1;
+        }
+
+        if (typeof req.query.url === "string") {
+            filter.url = req.query.url;
         }
 
         const data = await getVehiclesFromDB({ filter, pagination, skip, sort });

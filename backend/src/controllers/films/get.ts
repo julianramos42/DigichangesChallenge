@@ -7,6 +7,7 @@ interface FilmFilters {
     director?: RegExp;
     producer?: RegExp;
     release_date?: { $gte?: Date; $lte?: Date }; // Filtro para rango de fechas
+    url?: string;
 }
 
 export default async function getFilms(req: Request, res: Response, next: NextFunction) {
@@ -40,6 +41,10 @@ export default async function getFilms(req: Request, res: Response, next: NextFu
                 const endDate = new Date(year + 1, 0, 1); // 1 de enero del año siguiente
                 filter.release_date = { $gte: startDate, $lte: endDate }; // Rango de fechas para el año
             }
+        }
+
+        if (typeof req.query.url === "string") {
+            filter.url = req.query.url;
         }
 
         const data = await getFilmsFromDB({ filter, pagination, skip });

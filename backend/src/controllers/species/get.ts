@@ -6,6 +6,7 @@ interface SpeciesFilters {
     classification?: RegExp;
     designation?: RegExp;
     language?: RegExp;
+    url?: string;
 }
 
 export default async function getSpecies(req: Request, res: Response, next: NextFunction) {
@@ -33,6 +34,10 @@ export default async function getSpecies(req: Request, res: Response, next: Next
 
         if (typeof req.query.language === "string") {
             filter.language = new RegExp(req.query.language.trim(), "i");
+        }
+
+        if (typeof req.query.url === "string") {
+            filter.url = req.query.url;
         }
 
         const data = await getSpeciesFromDB({ filter, pagination, skip });

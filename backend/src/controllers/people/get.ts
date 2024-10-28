@@ -6,6 +6,7 @@ interface PeopleFilters {
     height?: RegExp;
     mass?: RegExp;
     gender?: RegExp;
+    url?: string;
 }
 
 export default async function getPeople(req: Request, res: Response, next: NextFunction) {
@@ -33,6 +34,10 @@ export default async function getPeople(req: Request, res: Response, next: NextF
 
         if (typeof req.query.gender === "string") {
             filter.gender = new RegExp(req.query.gender.trim(), "i");
+        }
+
+        if (typeof req.query.url === "string") {
+            filter.url = req.query.url;
         }
 
         const data = await getPeopleFromDB({ filter, pagination, skip });
