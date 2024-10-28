@@ -46,13 +46,6 @@ export default async function getVehicles(req: Request, res: Response, next: Nex
             sort.cost_in_credits = -1;
         }
 
-        // Verifica el orden para cargo_capacity
-        if (Number(req.query.cargo_capacity) === 1) { // ASC
-            sort.cargo_capacity = 1;
-        } else if (Number(req.query.cargo_capacity) === 0) { // DES
-            sort.cargo_capacity = -1;
-        }
-
         if (typeof req.query.url === "string") {
             filter.url = `https://swapi.dev/api/vehicles/${req.query.url}/`;
         }
