@@ -58,8 +58,17 @@ npm install
 ```
 
 ## Ejecuta la aplicación
-1. Backend: npm start (o npm run dev para desarrollo).
-2. Frontend: npm run dev.
+1. Backend:
+* Variables de entorno: 
+  - MONGO_DATABASE_URL (CONEXION BDD)
+  - PORT (PUERTO A UTILIZAR)
+  - OUR_URL (URL DEL BACK A UTILIZAR, LOCALHOST O DOMINIO. Ej: "http://localhost:8080" sin la / final)
+* npm start (o npm run dev para desarrollo).
+
+3. Frontend:
+* Variables de entorno:
+  - NEXT_PUBLIC_API_URL (URL A LAS QUE SE HACEN LAS PETICIONES. Ej: "http://localhost:8080/api" sin la / final)
+* npm run dev.
 
 ## Ejecución de Tests
 Para ejecutar los tests unitarios en el backend, utiliza el siguiente comando:
